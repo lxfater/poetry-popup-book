@@ -48,11 +48,17 @@ canvas{display:block;width:100%;height:100%}
   function handleError(event) {
     if (event.target instanceof HTMLScriptElement || event instanceof ErrorEvent) showRetry();
   }
+  const slow = setTimeout(() => {
+    if (!retry.hidden) return;
+    status.textContent = '加载比平时久，纸雕还在准备中。';
+    retry.hidden = false;
+  }, 6500);
   const timeout = setTimeout(showRetry, 24000);
   window.addEventListener('error', handleError, true);
   retry.addEventListener('click', () => location.reload());
   window.__showBookAfterFrame = () => {
     delete window.__showBookAfterFrame;
+    clearTimeout(slow);
     clearTimeout(timeout);
     window.removeEventListener('error', handleError, true);
     requestAnimationFrame(() => {
@@ -66,6 +72,6 @@ canvas{display:block;width:100%;height:100%}
 })();
 </script>
 <script src="./three.min.js" defer></script>
-<script src="./game.min.js?v=f617904cba1b" defer></script>
+<script src="./game.min.js?v=c7e25ee5e89a" defer></script>
 </body>
 </html>
